@@ -64,8 +64,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template is="dom-bind" id="app">
 
     <paper-drawer-panel id="paperDrawerPanel">
-      <!-- Drawer Scroll Header Panel -->
-      <paper-scroll-header-panel drawer fixed>
+      <!-- Drawer Header Panel -->
+      <paper-header-panel drawer fixed>
 
         <!-- Drawer Toolbar -->
         <paper-toolbar id="drawerToolbar">
@@ -94,17 +94,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Books</span>
           </a>
         </paper-menu>
-      </paper-scroll-header-panel>
+      </paper-header-panel>
 
       <!-- Main Area -->
-      <paper-scroll-header-panel main id="headerPanelMain" condenses keep-condensed-header>
-
+      <paper-header-panel main id="headerPanelMain">
+        <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
         <!-- Main Content -->
         <div class="content">
-
           <google-map disable-default-ui zoom="15"></google-map>
         </div>
-      </paper-scroll-header-panel>
+      </paper-header-panel>
     </paper-drawer-panel>
 
     <paper-toast id="toast">
