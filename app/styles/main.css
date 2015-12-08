@@ -12,18 +12,3 @@ body {
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #333;
 }
-
-#drawer{
-  z-index: 2;
-}
-
-#paperToggle{
-  position: fixed;
-  left: 20px;
-  top: 10px;
-  z-index: 1;
-}
-
-google-map{
-  height: 100%;
-}

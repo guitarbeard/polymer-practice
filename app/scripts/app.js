@@ -14,7 +14,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // and give it some initial binding values
   // Learn more about auto-binding templates at http://goo.gl/Dx1u2g
   var app = document.querySelector('#app');
-
   // Sets app default base URL
   app.baseUrl = '/';
   if (window.location.port === '') {  // if production
@@ -35,18 +34,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app.addEventListener('dom-change', function() {
     console.log('Our app is ready to rock!');
     var map = document.querySelector('google-map');
+    // var input = document.getElementById('mapSearch');
+    app.searches = [
+      {
+        searchTerm: 'bars',
+        results: ['dasd', 'asd', 'asd', 'sdasd'],
+        color: 'red'
+      },
+      {
+        searchTerm: 'Offline support with the Platinum Service Worker Elements',
+        results: ['dasd', 'asd', 'asd'],
+        color: 'blue'
+      }
+    ];
+    map.additionalMapOptions = {mapTypeControl: false};
     map.addEventListener('google-map-ready', function() {
       console.log('Map loaded!');
     });
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        map.latitude = pos.lat;
+        map.longitude = pos.lng;
+        app.userLocation = [pos];
+      }, function() {
+        // setLocationSearchbox();
+      });
+
+    } else {
+      // Browser doesn't support Geolocation
+      // setLocationSearchbox();
+    }
   });
 
   // See https://github.com/Polymer/polymer/issues/1381
   window.addEventListener('WebComponentsReady', function() {
     // imports are loaded and elements have been registered
   });
-
-  app.closeDrawer = function() {
-    app.$.paperDrawerPanel.closeDrawer();
-  };
 
 })(document);

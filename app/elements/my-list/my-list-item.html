@@ -10,22 +10,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="my-list-item.html">
 
-<dom-module id="my-list">
+<dom-module id="my-list-item">
   <template>
     <style>
       :host {
         display: block;
       }
 
-      ul{
-        padding: 0;
+      li{
+        margin-top: 5px;
+        padding-left: 8px;
+        display: flex;
+        justify-content:space-between;
+        color: white;
+        font-size: 15px;
+        font-weight: 300;
+        line-height: 30px;
+      }
+      .search-term{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: calc(100% - 41px);
+      }
+      paper-icon-button{
+        width: 33px;
+        height: 33px;
       }
     </style>
-    <ul>
-      <template is="dom-repeat" items="{{items}}">
-        <my-list-item item="{{item}}"></my-list-item>
-      </template>
-    </ul>
+      <li><div class="search-term">{{item.searchTerm}}</div><paper-icon-button icon="clear"></paper-icon-button></li>
   </template>
 
   <script>
@@ -33,22 +46,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       'use strict';
 
       Polymer({
-        is: 'my-list',
+        is: 'my-list-item',
         properties: {
-          items: {
-            type: Array,
+          item: {
+            type: Object,
             notify: true
           }
         },
         ready: function() {
-          this.items = [
-            'Responsive Web App boilerplate',
-            'Iron Elements and Paper Elements',
-            'End-to-end Build Tooling (including Vulcanize)',
-            'Unit testing with Web Component Tester',
-            'Routing with Page.js',
-            'Offline support with the Platinum Service Worker Elements'
-          ];
+          this.style.background = this.item.color;
         }
       });
     })();
