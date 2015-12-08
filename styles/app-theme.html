@@ -39,8 +39,16 @@
     }
 
     --paper-input-container-underline: {
-       height: 0;
-      }
+      display: none;
+    }
+
+    --paper-input-container-underline-focus: {
+      display: none;
+    }
+
+    --paper-input-container-underline-disabled: {
+      display: none;
+    }
 
   }
 
@@ -58,6 +66,7 @@
     z-index: 1;
     background: #fff;
     border-radius: 2px;
+    width: 248px;
   }
 
   google-map {
@@ -95,9 +104,6 @@
       --paper-drawer-panel-left-drawer-container: {
         background-color: rgba(255, 255, 255, 0.5);
       };
-    }
-    #drawer{
-        width: 225px!important;
     }
   }
 
