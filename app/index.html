@@ -80,10 +80,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Main Area -->
       <paper-header-panel main id="headerPanelMain">
 
-        <paper-input id="mapSearch" type="search"
-            placeholder="Search..." no-label-float>
-            <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle prefix></paper-icon-button>
-        </paper-input>
+        <div id="mapSearch">
+          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle prefix></paper-icon-button>
+          <input id="mapSearchInput" type="search" placeholder="Search...">
+        </div>
         <!-- Main Content -->
         <div class="content">
           <!-- <google-map-search map="[[map]]" query="Pizza" results="{{results}}"></google-map-search> -->

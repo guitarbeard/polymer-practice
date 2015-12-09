@@ -36,33 +36,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     /* Components */
 
     /* paper-drawer-panel */
-    --drawer-menu-color: #ffffff;
+    --drawer-menu-color: rgba(255, 255, 255, 0);
     --drawer-border-color: 1px solid #ccc;
     --drawer-toolbar-border-color: 1px solid rgba(0, 0, 0, 0.22);
 
     /* paper-menu */
     --paper-menu-background-color: #fff;
-
-    /*paper-input*/
-    --paper-input-container: {
-      padding: 0 8px 0 0;
-    }
-
-    --paper-input-container-input: {
-      padding: 8px 0;
-    }
-
-    --paper-input-container-underline: {
-      display: none;
-    }
-
-    --paper-input-container-underline-focus: {
-      display: none;
-    }
-
-    --paper-input-container-underline-disabled: {
-      display: none;
-    }
 
   }
 
@@ -80,7 +59,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     z-index: 1;
     background: #fff;
     border-radius: 2px;
-    width: 248px;
+    width: 240px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3)
+  }
+
+  #mapSearchInput{
+    font-size: 15px;
+    font-weight: 300;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 40px;
+    outline: none;
+    width: 190px;
   }
 
   google-map {
