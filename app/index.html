@@ -64,25 +64,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template is="dom-bind" id="app">
 
     <paper-drawer-panel id="paperDrawerPanel">
-      <!-- Drawer Header Panel -->
-      <paper-header-panel drawer fixed>
+      <!-- Drawer Scroll Header Panel -->
+      <paper-scroll-header-panel drawer fixed>
 
         <!-- Drawer Toolbar -->
         <paper-toolbar id="drawerToolbar">
-
+          <div class="bottom">
+            <paper-icon-button class="drawerTool" id="myLocation" icon="maps:my-location" on-tap="centerMap"></paper-icon-button>
+            <paper-icon-button class="drawerTool" id="editLocation" icon="maps:pin-drop"></paper-icon-button>
+            <div id="maxResultsInput" class="drawerTool">
+              <span>max results</span>
+              <input type="number" value="20">
+            </div>
+          </div>
         </paper-toolbar>
 
         <!-- Drawer Content -->
         <my-list items="{{searches}}"></my-list>
 
-      </paper-header-panel>
+      </paper-scroll-header-panel>
 
       <!-- Main Area -->
       <paper-header-panel main id="headerPanelMain">
 
         <div id="mapSearch">
-          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle prefix></paper-icon-button>
-          <input id="mapSearchInput" type="search" placeholder="Search...">
+          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+          <input id="mapSearchInput" type="search" placeholder="Set location...">
         </div>
         <!-- Main Content -->
         <div class="content">

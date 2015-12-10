@@ -28,55 +28,135 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Polymer.dom(document).querySelector('#caching-complete').show();
     }
   };
+  app.searches = [];
+  var colorArray = [
+                    '#7BB5E1',
+                    '#8379A7',
+                    '#2B9A77',
+                    '#C758A5',
+                    '#EDBA32',
+                    '#8F6456',
+                    '#D25441',
+                    '#73215F',
+                    '#0065BA'
+                  ];
 
+  function randomIntFromInterval(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  function getRandomColor() {
+    var color = colorArray.splice(randomIntFromInterval(0, colorArray.length - 1), 1);
+    return color[0];
+  }
+
+  function setMap(input) {
+    window.google.maps.event.clearInstanceListeners(input);
+    input.setAttribute('placeholder', 'Search...');
+    input.value = '';
+    input.focus();
+    var searchBoxOptions = {
+      bounds: new window.google.maps.Circle({center: app.userLocation[0], radius: 30}).getBounds()
+    };
+    var searchBox = new window.google.maps.places.SearchBox(input, searchBoxOptions);
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    searchBox.addListener('places_changed', function() {
+      var places = searchBox.getPlaces();
+      var resultLimitInput = document.querySelector('#maxResultsInput input');
+      resultLimitInput.value = Math.round(resultLimitInput.value);
+      if (resultLimitInput.value === 0) {
+        resultLimitInput.value = 1;
+      }
+
+      if (places.length === 0) {
+        window.alert('No search results!');
+        return false;
+      }
+      var color = getRandomColor();
+      function removeSearch(item) {
+        var allSearches = app.searches;
+        allSearches.splice(allSearches.indexOf(item), 1);
+        app.searches = [];
+        app.searches = allSearches;
+        colorArray.push(color);
+      }
+      var searchObj = {
+        handleRemove: removeSearch,
+        searchTerm: input.value,
+        results: places,
+        color: color
+      };
+      app.searches = app.searches.concat(searchObj);
+      input.value = '';
+      if (!colorArray.length) {
+        input.disabled = true;
+      }
+    });
+  }
+
+  function setLocationSearchbox(input, map) {
+    window.google.maps.event.clearInstanceListeners(input);
+    input.setAttribute('placeholder', 'Set location...');
+    input.setAttribute('style', '');
+    input.value = '';
+    input.focus();
+    app.userLocation = [];
+    var userLocationSearchBox = new window.google.maps.places.SearchBox(input);
+    userLocationSearchBox.addListener('places_changed', function() {
+      var places = userLocationSearchBox.getPlaces();
+      if (places.length === 0) {
+        return;
+      }
+      var pos = places[0].geometry.location;
+      map.latitude = pos.lat();
+      map.longitude = pos.lng();
+      app.userLocation = [{lat: map.latitude, lng: map.longitude}];
+      setMap(input, map);
+      // redo past searches
+      // redoSearchResults();
+    });
+  }
+
+  app.centerMap = function() {
+    var map = document.querySelector('google-map');
+    var pos = app.userLocation[0];
+    map.latitude = pos.lat;
+    map.longitude = pos.lng;
+    map.zoom = 15;
+  };
   // Listen for template bound event to know when bindings
   // have resolved and content has been stamped to the page
   app.addEventListener('dom-change', function() {
     var paperDrawerPanel = document.querySelector('#paperDrawerPanel');
     paperDrawerPanel.forceNarrow = true;
-
-    console.log('Our app is ready to rock!');
     var map = document.querySelector('google-map');
-    // var input = document.getElementById('mapSearch');
-    app.searches = [
-      {
-        searchTerm: 'bars',
-        results: ['dasd', 'asd', 'asd', 'sdasd'],
-        color: 'red'
-      },
-      {
-        searchTerm: 'Offline support with the Platinum Service Worker Elements',
-        results: ['dasd', 'asd', 'asd'],
-        color: 'blue'
-      }
-    ];
-    map.additionalMapOptions = {mapTypeControl: false};
+    var input = document.getElementById('mapSearchInput');
+
     map.addEventListener('google-map-ready', function() {
-      console.log('Map loaded!');
+      map.clickEvents = true;
+      map.additionalMapOptions = {mapTypeControl: false};
+
+      // Try HTML5 geolocation.
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          map.latitude = pos.lat;
+          map.longitude = pos.lng;
+          app.userLocation = [pos];
+          setMap(input, map);
+        }, function() {
+          setLocationSearchbox(input, map);
+        });
+
+      } else {
+        // Browser doesn't support Geolocation
+        setLocationSearchbox(input, map);
+      }
     });
-    // Try HTML5 geolocation.
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        map.latitude = pos.lat;
-        map.longitude = pos.lng;
-        app.userLocation = [pos];
-      }, function() {
-        // setLocationSearchbox();
-      });
-
-    } else {
-      // Browser doesn't support Geolocation
-      // setLocationSearchbox();
-    }
-  });
-
-  // See https://github.com/Polymer/polymer/issues/1381
-  window.addEventListener('WebComponentsReady', function() {
-    // imports are loaded and elements have been registered
   });
 
 })(document);

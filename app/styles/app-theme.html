@@ -39,9 +39,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     --drawer-menu-color: rgba(255, 255, 255, 0);
     --drawer-border-color: 1px solid #ccc;
     --drawer-toolbar-border-color: 1px solid rgba(0, 0, 0, 0.22);
+    --paper-drawer-panel-scrim-opacity: 0;
 
     /* paper-menu */
     --paper-menu-background-color: #fff;
+
+    /* paper-toolbar */
+    --paper-toolbar-height: 95px;
+    --paper-toolbar-sm-height: 95px;
 
   }
 
@@ -52,6 +57,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     background-color: var(--drawer-menu-color);
   }
 
+  #drawerToolbar .bottom{
+    width: 100%;
+    display: -webkit-flex;
+    -webkit-justify-content: space-around;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .drawerTool{
+    margin-top: 50px;
+  }
+
+  #maxResultsInput{
+    margin-top: 58px;
+  }
+
+  #maxResultsInput span{
+    font-size: 10px;
+    line-height: 10px;
+    width: 32px;
+    display: inline-block;
+  }
+
+  #maxResultsInput input{
+    width: 27px;
+  }
+
   #mapSearch{
     position: fixed;
     left: 8px;
@@ -60,7 +92,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     background: #fff;
     border-radius: 2px;
     width: 240px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3)
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   }
 
   #mapSearchInput{
@@ -72,6 +104,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     height: 40px;
     outline: none;
     width: 190px;
+    -webkit-appearance: none;
   }
 
   google-map {
