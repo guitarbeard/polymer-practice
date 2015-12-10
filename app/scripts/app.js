@@ -52,7 +52,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   }
 
   app.setMap = function() {
-    // var map = document.querySelector('google-map');
     var input = document.getElementById('mapSearchInput');
     window.google.maps.event.clearInstanceListeners(input);
     input.setAttribute('placeholder', 'Search...');
@@ -76,6 +75,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return false;
       }
       var color = getRandomColor();
+      var icon = {
+          path: 'M19.39,1.562c-2.505-1.238-5.94-0.477-8.377' +
+          ',1.643C8.576,1.085,5.141,0.323,2.636,1.562' +
+          'C-0.357,3.039-0.88,6.782,1.474,9.924l1.962,' +
+          '2.065l0.402,0.425l7.174,7.56l7.174-7.56l0.' +
+          '402-0.425l1.963-2.065 C22.906,6.782,22.383,3.039,19.39,1.562z',
+          fillColor: color,
+          strokeColor: '#fff',
+          fillOpacity: 1,
+          strokeOpacity: 0.5,
+          anchor: new window.google.maps.Point(11, 11)
+        };
       function removeSearch(item) {
         var allSearches = app.searches;
         allSearches.splice(allSearches.indexOf(item), 1);
@@ -83,10 +94,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         app.searches = allSearches;
         colorArray.push(color);
       }
+      var newPlaces = places.map(function(place) {
+        // Create a marker for each place.
+        var marker = new window.google.maps.Marker({
+          title: place.name,
+          position: place.geometry.location,
+          icon: icon,
+          animation: window.google.maps.Animation.DROP
+        });
+        place.marker = marker;
+        place.latitude = place.geometry.location.lat();
+        place.longitude = place.geometry.location.lng();
+        return place;
+      });
+
       var searchObj = {
         handleRemove: removeSearch,
         searchTerm: input.value,
-        results: places,
+        results: newPlaces,
         color: color
       };
       app.searches = app.searches.concat(searchObj);
@@ -136,6 +161,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app.addEventListener('dom-change', function() {
     var paperDrawerPanel = document.querySelector('#paperDrawerPanel');
     paperDrawerPanel.forceNarrow = true;
+    if (window.innerWidth > 600 || document.body.clientWidth > 600) {
+      paperDrawerPanel.openDrawer();
+    }
     var map = document.querySelector('google-map');
     map.singleInfoWindow = true;
     map.fitToMarkers = true;

@@ -95,10 +95,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="content">
           <google-map map={{map}} apiKey="AIzaSyCWb1JTCPMZGably03LXzXmEBfOjN6HfUw" zoom="15">
             <template is="dom-repeat" items="{{userLocation}}" as="marker">
-              <google-map-marker latitude="{{marker.lat}}" longitude="{{marker.lng}}">
+              <google-map-marker latitude="{{marker.lat}}"
+                                  longitude="{{marker.lng}}"
+                                  animation="DROP">
               </google-map-marker>
             </template>
-            <search-results searches={{searches}}></search-results>
+            <template is="dom-repeat" items="{{searches}}" as="search">
+              <template is="dom-repeat" items="{{search.results}}" as="result" index-as="result_no">
+                <google-map-marker map={{map}} marker="{{result.marker}}" latitude={{result.latitude}} longitude="{{result.longitude}}" animation="DROP" hidden>
+                  <strong>{{result.name}}</strong>
+                  <small>{{result.formatted_address}}</small>
+                </google-map-marker>
+              </template>
+            </template>
           </google-map>
         </div>
       </paper-header-panel>
