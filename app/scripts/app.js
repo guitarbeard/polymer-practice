@@ -73,7 +73,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       if (places.length === 0) {
-        app.$.toast.text = 'no results found :(';
+        app.$.toast.text = 'no results found';
         app.$.toast.show();
         return false;
       }
@@ -112,7 +112,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     userLocationSearchBox.addListener('places_changed', function() {
       var places = userLocationSearchBox.getPlaces();
       if (places.length === 0) {
-        app.$.toast.text = 'no results found :(';
+        app.$.toast.text = 'no results found';
         app.$.toast.show();
         return;
       }
