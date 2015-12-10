@@ -96,10 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <!-- <google-map-search map="[[map]]" query="Pizza" results="{{results}}"></google-map-search> -->
           <google-map map={{map}} apiKey="AIzaSyCWb1JTCPMZGably03LXzXmEBfOjN6HfUw" zoom="15">
             <template is="dom-repeat" items="{{userLocation}}" as="marker">
-              <google-map-marker latitude="{{marker.lat}}"
-                                 longitude="{{marker.lng}}">
-                <h2>{{marker.name}}</h2>
-                <span>{{marker.formatted_address}}</span>
+              <google-map-marker latitude="{{marker.lat}}" longitude="{{marker.lng}}">
               </google-map-marker>
             </template>
           </google-map>
