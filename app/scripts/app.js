@@ -28,6 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Polymer.dom(document).querySelector('#caching-complete').show();
     }
   };
+
   app.searches = [];
   var colorArray = [
                     '#7BB5E1',
@@ -50,7 +51,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     return color[0];
   }
 
-  function setMap(input) {
+  app.setMap = function() {
+    // var map = document.querySelector('google-map');
+    var input = document.getElementById('mapSearchInput');
     window.google.maps.event.clearInstanceListeners(input);
     input.setAttribute('placeholder', 'Search...');
     input.value = '';
@@ -70,7 +73,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       if (places.length === 0) {
-        window.alert('No search results!');
+        app.$.toast.text = 'no results found :(';
+        app.$.toast.show();
         return false;
       }
       var color = getRandomColor();
@@ -93,9 +97,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         input.disabled = true;
       }
     });
-  }
+  };
 
-  function setLocationSearchbox(input, map) {
+  app.setLocationSearchbox = function() {
+    var map = document.querySelector('google-map');
+    var input = document.getElementById('mapSearchInput');
     window.google.maps.event.clearInstanceListeners(input);
     input.setAttribute('placeholder', 'Set location...');
     input.setAttribute('style', '');
@@ -106,17 +112,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     userLocationSearchBox.addListener('places_changed', function() {
       var places = userLocationSearchBox.getPlaces();
       if (places.length === 0) {
+        app.$.toast.text = 'no results found :(';
+        app.$.toast.show();
         return;
       }
       var pos = places[0].geometry.location;
       map.latitude = pos.lat();
       map.longitude = pos.lng();
       app.userLocation = [{lat: map.latitude, lng: map.longitude}];
-      setMap(input, map);
+      app.setMap();
       // redo past searches
       // redoSearchResults();
     });
-  }
+  };
 
   app.centerMap = function() {
     var map = document.querySelector('google-map');
@@ -131,8 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     var paperDrawerPanel = document.querySelector('#paperDrawerPanel');
     paperDrawerPanel.forceNarrow = true;
     var map = document.querySelector('google-map');
-    var input = document.getElementById('mapSearchInput');
-
+    map.singleInfoWindow = true;
     map.addEventListener('google-map-ready', function() {
       map.clickEvents = true;
       map.additionalMapOptions = {mapTypeControl: false};
@@ -147,14 +154,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           map.latitude = pos.lat;
           map.longitude = pos.lng;
           app.userLocation = [pos];
-          setMap(input, map);
+          app.setMap();
         }, function() {
-          setLocationSearchbox(input, map);
+          app.setLocationSearchbox();
         });
 
       } else {
         // Browser doesn't support Geolocation
-        setLocationSearchbox(input, map);
+        app.setLocationSearchbox();
       }
     });
   });

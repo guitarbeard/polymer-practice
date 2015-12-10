@@ -71,7 +71,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-toolbar id="drawerToolbar">
           <div class="bottom">
             <paper-icon-button class="drawerTool" id="myLocation" icon="maps:my-location" on-tap="centerMap"></paper-icon-button>
-            <paper-icon-button class="drawerTool" id="editLocation" icon="maps:pin-drop"></paper-icon-button>
+            <paper-icon-button class="drawerTool" id="editLocation" icon="maps:pin-drop" on-tap="setLocationSearchbox"></paper-icon-button>
             <div id="maxResultsInput" class="drawerTool">
               <span>max results</span>
               <input type="number" value="20">
