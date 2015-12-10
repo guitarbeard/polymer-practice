@@ -18,7 +18,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       li{
-        margin-top: 5px;
         padding-left: 8px;
         display: -webkit-flex;
         -webkit-justify-content: space-between;
@@ -36,11 +35,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         max-width: calc(100% - 41px);
       }
       paper-icon-button{
+        float: right;
         width: 33px;
         height: 33px;
       }
     </style>
-      <li><div class="search-term">{{item.searchTerm}}</div><paper-icon-button icon="clear"></paper-icon-button></li>
+    <li style$="background:{{item.color}};">
+      <div class="search-term">{{item.searchTerm}}</div>
+      <paper-icon-button on-tap="handleRemove" icon="clear"></paper-icon-button>
+    </li>
   </template>
 
   <script>
@@ -55,8 +58,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             notify: true
           }
         },
-        ready: function() {
-          this.style.background = this.item.color;
+        handleRemove: function() {
+          this.item.handleRemove(this.item);
         }
       });
     })();

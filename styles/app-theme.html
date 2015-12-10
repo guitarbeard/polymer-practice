@@ -23,15 +23,26 @@
     --disabled-text-color: #bdbdbd;
     --divider-color: #B6B6B6;
 
+    --paper-toast-background-color: red;
+    --paper-toast-color: white;
+
     /* Components */
 
     /* paper-drawer-panel */
     --drawer-menu-color: rgba(255, 255, 255, 0);
     --drawer-border-color: 1px solid #ccc;
     --drawer-toolbar-border-color: 1px solid rgba(0, 0, 0, 0.22);
+    --paper-drawer-panel-scrim-opacity: 0;
+    --paper-drawer-panel-scrim: {
+      display: none;
+    }
 
     /* paper-menu */
     --paper-menu-background-color: #fff;
+
+    /* paper-toolbar */
+    --paper-toolbar-height: 95px;
+    --paper-toolbar-sm-height: 95px;
 
   }
 
@@ -40,6 +51,34 @@
   #drawerToolbar {
     color: var(--secondary-text-color);
     background-color: var(--drawer-menu-color);
+  }
+
+  #drawerToolbar .bottom{
+    width: 100%;
+    display: -webkit-flex;
+    -webkit-justify-content: space-around;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .drawerTool{
+    margin-top: 50px;
+  }
+
+  #maxResultsInput{
+    margin-top: 58px;
+  }
+
+  #maxResultsInput span{
+    font-size: 10px;
+    line-height: 10px;
+    width: 32px;
+    display: inline-block;
+  }
+
+  #maxResultsInput input{
+    width: 27px;
+    border: none;
   }
 
   #mapSearch{
@@ -88,8 +127,7 @@
   }
 
   #toast .toast-hide-button {
-    color: #eeff41;
-    margin: 10px;
+    float: right;
   }
 
   /* Breakpoints */
