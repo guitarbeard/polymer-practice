@@ -62,16 +62,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       bounds: new window.google.maps.Circle({center: app.userLocation[0], radius: 30}).getBounds()
     };
     var searchBox = new window.google.maps.places.SearchBox(input, searchBoxOptions);
-    // Listen for the event fired when the user selects a prediction and retrieve
-    // more details for that place.
+
     searchBox.addListener('places_changed', function() {
       var places = searchBox.getPlaces();
-      var resultLimitInput = document.querySelector('#maxResultsInput input');
-      resultLimitInput.value = Math.round(resultLimitInput.value);
-      if (resultLimitInput.value === 0) {
-        resultLimitInput.value = 1;
-      }
-
+      // var resultLimitInput = document.querySelector('#maxResultsInput input');
+      // resultLimitInput.value = Math.round(resultLimitInput.value);
+      // if (resultLimitInput.value === 0) {
+      //   resultLimitInput.value = 1;
+      // }
       if (places.length === 0) {
         app.$.toast.text = 'no results found';
         app.$.toast.show();
@@ -140,6 +138,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     paperDrawerPanel.forceNarrow = true;
     var map = document.querySelector('google-map');
     map.singleInfoWindow = true;
+    map.fitToMarkers = true;
     map.addEventListener('google-map-ready', function() {
       map.clickEvents = true;
       map.additionalMapOptions = {mapTypeControl: false};
