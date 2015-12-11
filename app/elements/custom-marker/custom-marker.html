@@ -1,0 +1,50 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/google-map/google-map-marker.html">
+
+<dom-module id="custom-marker">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <google-map-marker map="{{map}}"
+                      marker="{{result.marker}}"
+                      latitude="{{result.latitude}}"
+                      longitude="{{result.longitude}}"
+                      animation="DROP"
+                      info="{{infoWindow}}"
+                      hidden>
+    </google-map-marker>
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'custom-marker',
+        properties: {
+          result: {
+            type: Object,
+            notify: true
+          }
+        },
+        ready: function() {
+          var self = this;
+          this.result.marker.addListener('click', function() {
+            self.result.openWindow();
+            // self.info.setContent = '<h1>' + self.result.name + '</h1>';
+            // self.info.open(self.map, self.result.marker);
+          });
+          // console.log(this.result.marker);
+          // this.addEventListener('google-map-marker-click', function() {
+          //   this.info.setContent = '<h1>' + this.result.name + '</h1>';
+          //   this.info.open(this.map, this.result.marker);
+          // }, this);
+        }
+      });
+    })();
+  </script>
+
+</dom-module>

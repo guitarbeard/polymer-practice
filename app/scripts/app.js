@@ -51,17 +51,52 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     return color[0];
   }
 
+  function buildInfoWindowHtml(place) {
+    // var photo = '';
+    // if (place.photos) {
+    //   var src = place.photos[0].getUrl({maxHeight: 500, maxWidth: 500});
+    //   photo = '<div class="place-img" style="background-image:url(' + src +
+    //    ');"></div><span class="attribution">' +
+    //    place.photos[0]['html_attributions'][0] + '</span><br>';
+    // }
+    //
+    // var name = '<strong>' + place.name + '</strong>';
+    //
+    // var remove = '<button id="remove"' + place['place_id'] +
+    // '" type="button" class="btn btn-danger btn-xs remove-single-result">remove</button>';
+    //
+    // var address = ''
+    // for (var i = 0; i < place['address_components'].length; i++) {
+    //   if (i === 0){
+    //     address += '<br>';
+    //   }
+    //   if (place['address_components'][i].types[0] === 'locality') {
+    //     if(i !== 0){
+    //       address += '<br>';
+    //     }
+    //
+    //     address += place['address_components'][i]['short_name'] + ', ';
+    //   } else if (place['address_components'][i].types[0] !== 'country' &&
+    //   place['address_components'][i].types[0] !== 'administrative_area_level_3' &&
+    //   place['address_components'][i].types[0] !== 'administrative_area_level_2') {
+    //     address += place['address_components'][i]['short_name'] + ' ';
+    //   }
+    // }
+    return '<h4>' + place.name + '</h4>';
+  }
+
   app.setMap = function() {
+    // var map = document.querySelector('google-map');
     var input = document.getElementById('mapSearchInput');
     window.google.maps.event.clearInstanceListeners(input);
     input.setAttribute('placeholder', 'Search...');
     input.value = '';
     input.focus();
     var searchBoxOptions = {
-      bounds: new window.google.maps.Circle({center: app.userLocation[0], radius: 30}).getBounds()
+      bounds: new window.google.maps.Circle({center: app.userLocation, radius: 30}).getBounds()
     };
     var searchBox = new window.google.maps.places.SearchBox(input, searchBoxOptions);
-
+    var mapSearch = new window.google.maps.places.PlacesService(app.map);
     searchBox.addListener('places_changed', function() {
       var places = searchBox.getPlaces();
       // var resultLimitInput = document.querySelector('#maxResultsInput input');
@@ -102,6 +137,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           icon: icon,
           animation: window.google.maps.Animation.DROP
         });
+
+        function openWindow() {
+          console.log(place);
+          mapSearch.getDetails({placeId: place.place_id}, function(details) {
+            detailCallback(details);
+          });
+
+          function detailCallback(placeDetail) {
+            console.log(placeDetail);
+            app.infoWindow.setContent('<div class="infoWindow">' +
+            buildInfoWindowHtml(placeDetail) +  '</div>');
+            app.infoWindow.open(app.map, marker);
+            // var removeBtn = document.getElementById('remove' + place.place_id);
+            // window.google.maps.event.addDomListener(removeBtn, "click", function(event){
+            //   event.preventDefault();
+            //   marker.setMap(null);
+            //   delete allMarkers[marker.id];
+            // });
+            // window.google.maps.event.addDomListener(removeBtn, "touchend", function(event){
+            //   event.stopPropagation();
+            //   marker.setMap(null);
+            //   delete allMarkers[marker.id];
+            // });
+          }
+        }
+
+        place.openWindow = openWindow;
         place.marker = marker;
         place.latitude = place.geometry.location.lat();
         place.longitude = place.geometry.location.lng();
@@ -130,7 +192,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     input.setAttribute('style', '');
     input.value = '';
     input.focus();
-    app.userLocation = [];
+    app.userLocation = {};
     var userLocationSearchBox = new window.google.maps.places.SearchBox(input);
     userLocationSearchBox.addListener('places_changed', function() {
       var places = userLocationSearchBox.getPlaces();
@@ -142,7 +204,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var pos = places[0].geometry.location;
       map.latitude = pos.lat();
       map.longitude = pos.lng();
-      app.userLocation = [{lat: map.latitude, lng: map.longitude}];
+      app.userLocation = {lat: map.latitude, lng: map.longitude};
       app.setMap();
       // redo past searches
       // redoSearchResults();
@@ -151,9 +213,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   app.centerMap = function() {
     var map = document.querySelector('google-map');
-    var pos = app.userLocation[0];
-    map.latitude = pos.lat;
-    map.longitude = pos.lng;
+    map.latitude = app.userLocation.lat;
+    map.longitude = app.userLocation.lng;
     map.zoom = 15;
   };
   // Listen for template bound event to know when bindings
@@ -164,13 +225,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     if (window.innerWidth > 600 || document.body.clientWidth > 600) {
       paperDrawerPanel.openDrawer();
     }
+    var userLocationMarker = document.querySelector('#userLocationMarker');
+    userLocationMarker.addEventListener('google-map-marker-mouseup', function() {
+      app.setMap();
+    });
     var map = document.querySelector('google-map');
-    map.singleInfoWindow = true;
-    map.fitToMarkers = true;
     map.addEventListener('google-map-ready', function() {
-      map.clickEvents = true;
       map.additionalMapOptions = {mapTypeControl: false};
-
+      // add infoWindow
+      app.infoWindow = new window.google.maps.InfoWindow({content: '<h1>cheese!</h1>'});
       // Try HTML5 geolocation.
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -180,7 +243,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           };
           map.latitude = pos.lat;
           map.longitude = pos.lng;
-          app.userLocation = [pos];
+          app.userLocation = pos;
           app.setMap();
         }, function() {
           app.setLocationSearchbox();
